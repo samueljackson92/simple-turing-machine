@@ -1,0 +1,8 @@
+//Simple program to add two
+//unary numbers together
+
+1,R,#,1,2 
+2,R,#,#,3
+3,L,1,#,4
+4,L,#,#,5
+5,H
