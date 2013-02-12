@@ -9,7 +9,7 @@ import re
 
 pointer = 0		#instruction pointer
 tape = None		#tape of symbols
-program = None	#the program to run (states)
+program = []	#the program to run (states)
 
 #read in the tape of symbols
 def read_tape(filename):
@@ -20,12 +20,17 @@ def read_tape(filename):
 #read in the program file
 def read_prog(filename):
 	global program
-	comment = re.compile(r"//.*?\n")
-	whitespace = re.compile(r'\s+')
-	#read file, strip comment and whitespace
-	program = [re.sub(comment, '', line).strip().split(',') 
-				for line in open(filename) 
-				if not re.match(comment, line) and not re.match(whitespace, line)]
+
+	comment, whitespace= re.compile(r"//.*?\n"), re.compile(r'(\s+|^$)')
+
+	for i, line in enumerate(open(filename).readlines()):
+		line = re.sub(comment, '', line).strip().split(',')
+		if not re.match(whitespace, ''.join(line)):
+			if not re.match(re.compile(r"^(\d(R|L)..\d|\dH)$"), ''.join(line)):
+				print "Bad Program at line %d" % (i+1)
+				exit(-1)
+			else:
+				program.append(line)
 
 #set the direction we are looking
 def set_direction(d):
@@ -44,7 +49,7 @@ def read_instruction(instructions):
 		direct = set_direction(direct)
 
 		#add more tape as required
-		if pointer+direct > len(tape)-1:
+		if pointer+direct >= len(tape)-1:
 			tape.append('#')
 		elif pointer+direct < 0:
 			tape.insert(0,'#')

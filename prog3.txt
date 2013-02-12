@@ -1,0 +1,15 @@
+//Convert a unary to reverse binary number
+
+1,R,1,a,2
+1,R,#,#,6
+
+2,R,#,#,3
+
+3,R,1,0,3
+3,R,#,1,4
+3,R,0,1,4
+
+4,L,#,#,5
+5,L,a,a,1
+
+6,H
